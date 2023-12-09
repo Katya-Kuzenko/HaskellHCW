@@ -36,3 +36,12 @@ ex1partB = do -- щось не дуже правдоподібно вийшло
 ex1 = do
     ex1partA
     ex1partB
+
+-- EX. 2
+
+-- Part A
+
+emptySet :: IntSet
+emptySet x = False
+allInts :: IntSet
+allInts x = True 
