@@ -38,6 +38,10 @@ ex1 = do
     ex1partB
 
 -- EX. 2
+type IntSet = (Int -> Bool)
+
+isMember :: IntSet -> Int -> Bool
+isMember f x = f x
 
 -- Part A
 emptySet :: IntSet
@@ -47,4 +51,10 @@ allInts x = True
 
 -- Part B
 interval :: Int -> Int -> IntSet
-interval lBound uBound = \x -> x=> lBound && x<= uBound
+interval lBound uBound = \x -> x >= lBound && x <= uBound
+
+ex2 = do
+    print $ isMember emptySet 5
+    print $ isMember allInts 42
+    print $ isMember (interval 0 5) 10
+    print $ isMember (interval 0 5) 3
