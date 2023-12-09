@@ -61,10 +61,114 @@ euclidFunc k = \x -> euc x k == 1
         euc a 0 = a 
         euc a b = euc b (a `mod` b)
 
+-- Part D
+setIntersection :: IntSet -> IntSet -> IntSet -- перетин
+setIntersection setA setB = \x -> setA x && setB x 
+
+setUnion        :: IntSet -> IntSet -> IntSet -- об'єднання
+setUnion setA setB = \x -> setA x || setB x 
+
+setComplement   :: IntSet -> IntSet -> IntSet -- доповнення
+setComplement setA setB = \x -> setA x && not (setB x)
+
+addToSet      :: Int -> IntSet -> IntSet
+addToSet a set = setUnion set (\x -> x == a)
+
+deleteFromSet :: Int -> IntSet -> IntSet
+deleteFromSet a set = setIntersection set (\x -> x /= a)
+
 ex2 = do
-    print $ isMember emptySet 5
-    print $ isMember allInts 42
-    print $ isMember (interval 0 5) 10
-    print $ isMember (interval 0 5) 3
-    print $ isMember (euclidFunc 5) 3
-    print $ isMember (euclidFunc 8) 2
+    print "Ex. 2"
+    print "Check the function emptySet"
+    print $ isMember emptySet 5 -- False
+    print "Check the function allInts"
+    print $ isMember allInts 42 -- True
+    print "Check the function interval"
+    print $ isMember (interval 0 5) 10 -- False
+    print $ isMember (interval 0 5) 3 -- True
+    print "Check the function euclidFunc"
+    print $ isMember (euclidFunc 5) 3 -- True
+    print $ isMember (euclidFunc 8) 2 -- False
+    print "Check the function setIntersection"
+    print $ isMember (setIntersection (interval 1 5) (interval 3 10)) 4 -- True
+    print $ isMember (setIntersection (interval 1 5) (interval 3 10)) 6 -- False
+    print "Check the function setUnion"
+    print $ isMember (setUnion (interval 1 5) (interval 3 10)) 4 -- True
+    print $ isMember (setUnion (interval 1 5) (interval 3 10)) 6 -- True
+    print $ isMember (setUnion (interval 1 5) (interval 3 10)) 12 -- False
+    print "Check the function setComplement"
+    print $ isMember (setComplement allInts (interval 1 10)) 5 -- False
+    print $ isMember (setComplement allInts (interval 1 10)) 15 -- True
+    print "Check the function addToSet"
+    print $ isMember (addToSet 4 (interval 1 3)) 4 -- True
+    print $ isMember (addToSet 4 (interval 1 3)) 2 -- True
+    print "Check the function deleteFromSet"
+    print $ isMember (deleteFromSet 4 (interval 1 5)) 4 -- False
+    print $ isMember (deleteFromSet 4 (interval 1 5)) 1 -- True
+
+-- EX. 3
+
+-- Part A
+
+type Stack = [String]
+
+parse :: String -> Stack
+parse = concatMap words . reverse . foldl processToken [] . words
+
+processToken :: Stack -> String -> Stack
+processToken stack token =
+  case token of
+    "(" -> "(" : stack
+    ")" -> processRightParenthesis stack
+    _   -> processOtherToken stack token
+
+processRightParenthesis :: Stack -> Stack
+processRightParenthesis stack =
+  let (operators, rest) = span (/= "(") stack
+  in init operators ++ rest
+
+processOtherToken :: Stack -> String -> Stack
+processOtherToken stack token =
+  case token of
+    "+" -> handleOperator stack '+'
+    "-" -> handleOperator stack '-'
+    "*" -> handleOperator stack '*'
+    "/" -> handleOperator stack '/'
+    "^" -> handleOperator stack '^'
+    "%" -> handleOperator stack '%'
+    _   -> token : stack
+
+handleOperator :: Stack -> Char -> Stack
+handleOperator stack operator =
+  let (lowerPrecedence, rest) = span (\t -> isOperator t && operatorPrecedence t >= operatorPrecedence [operator]) stack
+  in lowerPrecedence ++ [operator] : rest
+
+isOperator :: String -> Bool
+isOperator (c:_) = c `elem` "+-*/^%"
+isOperator _ = False
+
+operatorPrecedence :: String -> Int
+operatorPrecedence (c:_) =
+  case c of
+    '+' -> 1
+    '-' -> 1
+    '*' -> 2
+    '/' -> 2
+    '^' -> 3
+    '%' -> 2
+    _   -> 0
+operatorPrecedence _ = 0
+
+
+ex3 = do -- щось явно не те, що нам потрібно 
+    let exp1 = "10 * 2 ^ (3 - 1) * 3.5"
+        exp2 = "(10 / (2 % 2)) + 1"
+        exp3 = "((2 + 2)) + (((3 ^ 2 % 2)))"
+    print $ parse exp1
+    print $ parse exp2
+    print $ parse exp3
+
+
+main = do
+    ex1
+    ex2
