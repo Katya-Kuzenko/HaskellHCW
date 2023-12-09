@@ -40,8 +40,11 @@ ex1 = do
 -- EX. 2
 
 -- Part A
-
 emptySet :: IntSet
 emptySet x = False
 allInts :: IntSet
 allInts x = True 
+
+-- Part B
+interval :: Int -> Int -> IntSet
+interval lBound uBound = \x -> x=> lBound && x<= uBound
