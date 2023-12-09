@@ -53,8 +53,18 @@ allInts x = True
 interval :: Int -> Int -> IntSet
 interval lBound uBound = \x -> x >= lBound && x <= uBound
 
+-- Part C
+euclidFunc :: Int -> IntSet
+euclidFunc k = \x -> euc x k == 1
+    where 
+        euc :: Int -> Int -> Int
+        euc a 0 = a 
+        euc a b = euc b (a `mod` b)
+
 ex2 = do
     print $ isMember emptySet 5
     print $ isMember allInts 42
     print $ isMember (interval 0 5) 10
     print $ isMember (interval 0 5) 3
+    print $ isMember (euclidFunc 5) 3
+    print $ isMember (euclidFunc 8) 2
