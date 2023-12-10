@@ -107,6 +107,7 @@ ex2 = do
     print $ isMember (deleteFromSet 4 (interval 1 5)) 1 -- True
 
 
+
 main = do
     ex1
     ex2
