@@ -106,6 +106,7 @@ ex2 = do
     print $ isMember (deleteFromSet 4 (interval 1 5)) 4 -- False
     print $ isMember (deleteFromSet 4 (interval 1 5)) 1 -- True
 
+<<<<<<< HEAD
 -- EX. 3
 
 -- Part A
@@ -167,6 +168,8 @@ ex3 = do -- щось явно не те, що нам потрібно
     print $ parse exp1
     print $ parse exp2
     print $ parse exp3
+=======
+>>>>>>> ee299ae57040c8109f3522d1d091533d7c2e8280
 
 
 main = do
